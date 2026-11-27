@@ -3,66 +3,200 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-store, must-revalidate">
 <title>스레드 · 인스타 작업실</title>
 <meta name="description" content="네이버 블로그 원문을 Threads·Instagram 포스트로 변환한 작업 게시판">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="./style.css?v=3">
+<style>
+  #site { display: none; }
+  #lock {
+    position: fixed; inset: 0; z-index: 9999;
+    background: #0d1117; display: flex; align-items: center; justify-content: center;
+    padding: 20px; box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Segoe UI", sans-serif;
+    color: #e6edf3;
+  }
+  #lock .lbox {
+    width: 100%; max-width: 330px; background: #161b22; border: 1px solid #30363d;
+    border-radius: 18px; padding: 30px 24px 24px; text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,.5);
+  }
+  #lock .lic { font-size: 26px; margin-bottom: 10px; }
+  #lock h2 { margin: 0 0 8px; font-size: 19px; letter-spacing: -.02em; color: #e6edf3; }
+  #lock p.ld { margin: 0 0 20px; color: #8b949e; font-size: 12.5px; line-height: 1.6; }
+  #lock input {
+    width: 100%; box-sizing: border-box; padding: 13px 15px; border-radius: 11px;
+    border: 1px solid #30363d; background: #0d1117; color: #e6edf3;
+    font-size: 17px; text-align: center; letter-spacing: .35em;
+    font-family: inherit; outline: none;
+  }
+  #lock input:focus { border-color: #58a6ff; }
+  #lock button {
+    width: 100%; margin-top: 10px; padding: 13px; border-radius: 11px; border: 0;
+    background: #3fb950; color: #07130a; font-size: 14.5px; font-weight: 700;
+    font-family: inherit; cursor: pointer;
+  }
+  #lock button:disabled { opacity: .6; }
+  #lock .le { margin: 12px 0 0; min-height: 16px; color: #ff7b72; font-size: 12.5px; }
+</style>
 </head>
 <body>
-<div class="lock" id="lock">
-  <div class="lockbox">
-    <div class="lockicon">🔒</div>
+
+<div id="site">
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="#/">
+        <span class="dot"></span>
+        <span>스레드 · 인스타 작업실</span>
+      </a>
+      <nav class="nav">
+        <a id="blogLink" href="https://blog.naver.com/like_moon" target="_blank" rel="noopener">원본 블로그 ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap" id="app">
+    <section id="listView">
+      <div class="hero">
+        <h1>블로그 최신글 → <em>Threads 3종 + Instagram 1종</em></h1>
+        <p class="sub" id="metaLine">불러오는 중…</p>
+      </div>
+      <div class="tools">
+        <input id="q" type="search" placeholder="제목 · 지역 · 카테고리 검색" autocomplete="off">
+        <div class="chips" id="chips"></div>
+      </div>
+      <div class="cards" id="cards"></div>
+      <p class="empty" id="empty" hidden>해당하는 글이 없습니다.</p>
+    </section>
+    <section id="detailView" hidden></section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <span id="footMeta"></span>
+      <span class="sep">·</span>
+      <a href="#/">목록으로</a>
+    </div>
+  </footer>
+</div>
+
+<div id="lock">
+  <div class="lbox">
+    <div class="lic">🔒</div>
     <h2>작업실 입장</h2>
-    <p class="lockdesc">비밀번호를 입력하면 90일간 다시 묻지 않습니다.</p>
+    <p class="ld">비밀번호를 입력하면 90일간 다시 묻지 않습니다.</p>
     <input id="pw" type="password" inputmode="numeric" autocomplete="off" placeholder="비밀번호">
     <button id="pwbtn">열기</button>
-    <p class="lockerr" id="lockerr"></p>
+    <p class="le" id="lockerr"></p>
   </div>
 </div>
 
-<header class="top">
-  <div class="wrap">
-    <a class="brand" href="#/">
-      <span class="dot"></span>
-      <span>스레드 · 인스타 작업실</span>
-    </a>
-    <nav class="nav">
-      <a id="blogLink" href="https://blog.naver.com/like_moon" target="_blank" rel="noopener">원본 블로그 ↗</a>
-    </nav>
-  </div>
-</header>
-
-<main class="wrap hidden" id="app">
-  <section id="listView">
-    <div class="hero">
-      <h1>블로그 최신글 → <em>Threads 3종 + Instagram 1종</em></h1>
-      <p class="sub" id="metaLine">불러오는 중…</p>
-    </div>
-
-    <div class="tools">
-      <input id="q" type="search" placeholder="제목 · 지역 · 카테고리 검색" autocomplete="off">
-      <div class="chips" id="chips"></div>
-    </div>
-
-    <div class="cards" id="cards"></div>
-    <p class="empty" id="empty" hidden>해당하는 글이 없습니다.</p>
-  </section>
-
-  <section id="detailView" hidden></section>
-</main>
-
-<footer class="foot">
-  <div class="wrap">
-    <span id="footMeta"></span>
-    <span class="sep">·</span>
-    <a href="#/">목록으로</a>
-  </div>
-</footer>
-
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="./gate.js"></script>
-<script src="./app.js"></script>
+
+<script>
+(function () {
+  var COOKIE = 'txb_k1';
+  var DAYS = 90;
+
+  function b64d(s) { return Uint8Array.from(atob(s), function (c) { return c.charCodeAt(0); }); }
+  function b64e(buf) { return btoa(String.fromCharCode.apply(null, new Uint8Array(buf))); }
+
+  function getCookie(name) {
+    var hit = document.cookie.split('; ').find(function (r) { return r.indexOf(name + '=') === 0; });
+    return hit ? hit.slice(name.length + 1) : null;
+  }
+  function setCookie(name, val, days) {
+    var exp = new Date(Date.now() + days * 864e5).toUTCString();
+    document.cookie = name + '=' + val + '; expires=' + exp + '; path=/; SameSite=Lax';
+  }
+
+  var meta = null, cachedKey = null;
+
+  function loadMeta() {
+    if (meta) return Promise.resolve(meta);
+    return fetch('./data/board.enc.json?v=3', { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('load ' + r.status); return r.json(); })
+      .then(function (m) { meta = m; return m; });
+  }
+
+  function reveal() {
+    document.getElementById('lock').style.display = 'none';
+    document.getElementById('site').style.display = '';
+  }
+
+  function decryptWithKey(keyB64) {
+    return loadMeta().then(function (m) {
+      if (cachedKey) return m;
+      return crypto.subtle.importKey('raw', b64d(keyB64), 'AES-GCM', false, ['decrypt'])
+        .then(function (k) { cachedKey = k; return m; });
+    }).then(function (m) {
+      return crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64d(m.iv) }, cachedKey, b64d(m.ct));
+    }).then(function (pt) {
+      return JSON.parse(new TextDecoder().decode(pt));
+    });
+  }
+
+  function deriveFromPassword(pw) {
+    return loadMeta().then(function (m) {
+      return crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey'])
+        .then(function (base) {
+          return crypto.subtle.deriveKey(
+            { name: 'PBKDF2', salt: b64d(m.salt), iterations: m.iter, hash: 'SHA-256' },
+            base, { name: 'AES-GCM', length: 256 }, true, ['decrypt']
+          );
+        });
+    });
+  }
+
+  function promptLoop() {
+    return new Promise(function (resolve) {
+      var input = document.getElementById('pw');
+      var btn = document.getElementById('pwbtn');
+      var err = document.getElementById('lockerr');
+      setTimeout(function () { input.focus(); }, 100);
+
+      function go() {
+        var pw = input.value.trim();
+        if (!pw) return;
+        btn.disabled = true; btn.textContent = '확인 중'; err.textContent = '';
+        deriveFromPassword(pw)
+          .then(function (key) { return crypto.subtle.exportKey('raw', key); })
+          .then(function (raw) {
+            var keyB64 = b64e(raw);
+            return decryptWithKey(keyB64).then(function (data) {
+              setCookie(COOKIE, keyB64, DAYS);
+              reveal();
+              resolve(data);
+            });
+          })
+          .catch(function () {
+            err.textContent = '비밀번호가 맞지 않습니다';
+            input.value = ''; input.focus();
+          })
+          .then(function () { btn.disabled = false; btn.textContent = '열기'; });
+      }
+
+      btn.addEventListener('click', go);
+      input.addEventListener('keydown', function (e) { if (e.key === 'Enter') go(); });
+    });
+  }
+
+  window.loadBoardData = function () {
+    var saved = getCookie(COOKIE);
+    if (!saved) return promptLoop();
+    return decryptWithKey(saved).then(function (data) {
+      reveal();
+      return data;
+    }).catch(function () {
+      document.cookie = COOKIE + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+      return promptLoop();
+    });
+  };
+})();
+</script>
+<script src="./app.js?v=3"></script>
 </body>
 </html>

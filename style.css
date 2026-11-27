@@ -119,6 +119,20 @@ a{color:inherit;text-decoration:none}
 
 /* 비밀번호 게이트 */
 .hidden{display:none !important}
+
+/* 블로그 링크 복사 */
+.srcrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.urlcopy{
+  background:var(--panel2);border:1px solid var(--line);color:var(--txt);
+  font-size:12px;font-weight:600;padding:7px 12px;border-radius:8px;
+  cursor:pointer;font-family:inherit;transition:.15s;white-space:nowrap;
+}
+.urlcopy:hover{border-color:var(--accent2);color:var(--accent2)}
+.urlcopy.done{background:rgba(63,185,80,.15);border-color:var(--accent);color:var(--accent)}
+.srcplain{
+  margin:8px 0 0;font-size:11.5px;color:var(--dim);word-break:break-all;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;line-height:1.5;
+}
 .lock{
   position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;
   background:radial-gradient(900px 500px at 50% 0%, #16202e 0%, var(--bg) 60%) no-repeat, var(--bg);

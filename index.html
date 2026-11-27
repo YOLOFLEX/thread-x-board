@@ -11,6 +11,17 @@
 <link rel="stylesheet" href="./style.css">
 </head>
 <body>
+<div class="lock" id="lock">
+  <div class="lockbox">
+    <div class="lockicon">🔒</div>
+    <h2>작업실 입장</h2>
+    <p class="lockdesc">비밀번호를 입력하면 90일간 다시 묻지 않습니다.</p>
+    <input id="pw" type="password" inputmode="numeric" autocomplete="off" placeholder="비밀번호">
+    <button id="pwbtn">열기</button>
+    <p class="lockerr" id="lockerr"></p>
+  </div>
+</div>
+
 <header class="top">
   <div class="wrap">
     <a class="brand" href="#/">
@@ -23,7 +34,7 @@
   </div>
 </header>
 
-<main class="wrap" id="app">
+<main class="wrap hidden" id="app">
   <section id="listView">
     <div class="hero">
       <h1>블로그 최신글 → <em>Threads 3종 + Instagram 1종</em></h1>
@@ -51,6 +62,7 @@
 </footer>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="./gate.js"></script>
 <script src="./app.js"></script>
 </body>
 </html>

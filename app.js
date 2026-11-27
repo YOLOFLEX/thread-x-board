@@ -42,6 +42,7 @@ function fullText(piece) {
 }
 
 function init(data) {
+  if (state.data) return;
   state.data = data;
   $('#blogLink').href = data.blog;
   const total = data.posts.reduce((a, p) => a + p.threads.length + 1, 0);
@@ -170,9 +171,10 @@ document.addEventListener('click', (e) => {
 
 window.addEventListener('hashchange', route);
 
-fetch('./data/posts.json')
-  .then((r) => r.json())
-  .then(init)
+window.__bootBoard = init;
+
+window.loadBoardData()
+  .then((data) => init(data))
   .catch((err) => {
     $('#metaLine').textContent = '데이터를 불러오지 못했습니다: ' + err.message;
   });

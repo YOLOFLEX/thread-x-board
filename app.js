@@ -136,7 +136,11 @@ function renderDetail(p) {
         <span>${esc(p.published)}</span>
       </div>
       <h1>${esc(p.sourceTitle)}</h1>
-      <a class="src" href="${esc(p.sourceUrl)}" target="_blank" rel="noopener">네이버 블로그 원문 보기 ↗</a>
+      <div class="srcrow">
+        <a class="src" href="${esc(p.sourceUrl)}" target="_blank" rel="noopener">네이버 블로그 원문 보기 ↗</a>
+        <button class="copy urlcopy" data-copy="${esc(p.sourceUrl)}">블로그 링크 복사</button>
+      </div>
+      <p class="srcplain">${esc(p.sourceUrl)}</p>
     </div>
     ${th}
     ${ig}
